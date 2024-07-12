@@ -1,14 +1,28 @@
-import random as r
+import discord
+from discord.ext import commands
+from Cmd import gen_pass
 
-character = '+-/*!&$#?=@abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890'
-pass_lenght = int(input('Introdusca la longitud de la clave'))
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix = '!', intents=intents)
 
-password = ''
+token = 'MWAFhuu1937287398DWFDMrefhehj1738'
 
-for i in range (pass_lenght):
-    password += r.choice(character)
+@bot.event
+async def on_read():
+    print(f'Saludos! {bot.user}!')
 
-print(password)
+@bot.command()
+async def password(ctx):
+    await ctx.send(gen_pass(20))
 
-a = len(password)
-print('Cantidad de caracteres:', a)
+@bot.command()
+async def test(ctx, arg):
+    await ctx.send(arg)
+
+@bot.command()
+async def test2(ctx, *args):
+    arguments = ', '.join(args)
+    await ctx.send(f'{len(args)} arguments: {arguments}')
+
+bot.run(token)
